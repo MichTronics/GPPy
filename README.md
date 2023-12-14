@@ -1,4 +1,4 @@
-### GRAPHIC PACKET 3 
+### GRAPHIC PACKET PYTHON 
 
 New packet radio software called GP3 i used old GP1.63 as inspiration.
 This version is maked in python and use de kiss3 (https://github.com/python-aprs/kiss3) and ax253 library (https://github.com/python-aprs/ax253) from Greg Albrecht W2GMD and
