@@ -221,50 +221,12 @@ class kissAx25(Thread):
         print(test.control.ftype)
         dest = str(test.destination)
         if test.control.ftype is FrameType.U_UI:
-            # a = str(test).split(':')
-            # print(a)
             a = [str(test).split(':', 1)[0] + ':'] + str(test).split(':', 1)[1:]
             print(a)            
             ui.tEMonitor.append(allFormat.format(a[0] + " " + str(test.control.ftype)))
             ui.tEMonitor.append(uiFormat.format(a[1]))
-            # ui.tEMonitor.verticalScrollBar().setValue(ui.tEMonitor.verticalScrollBar().maximum())
-            # for line in test.info.decode().split('\r'):
-            # if "<" in test.info.decode() or ">" in test.info.decode():
-            #     a = test.info.decode().replace("<", "&lt;")
-            #     print(a)
-                # lineltgt = linelt.replace(">", "&gt;")
-                # print(lineltgt)
-            # ui.textEdit.setStyleSheet("color: #FF00FF")
-            
-            
-            #     if "<" in line or ">" in line:
-            #         linelt = line.replace("<", "&lt;")
-            #         lineltgt = linelt.replace(">", "&gt;")
-            #         ui.tEMonitor.append(uiFormat.format(str(lineltgt) + " " + str(test.control.ftype)))
-            #     else:
-            
-                    
-                # index = line.find('<')
-                # if index != -1:
-                #     mfs = line[:index] + '&gt;' + line[index + 1:]
-                #     print(mfs)
-                
-                # if line.find('<') is True:
-                #     test = line.replace("<", "&lt;")
-                #     print(test)
-                #     if test.find('>') == True:
-                #         abc = test.replace(">", "&gt;")
-                #         print(abc)                
-                # else:
-                    
-                # ui.tEMonitor.append(line + " " + str(test.control.ftype))
         else:
-            # ui.textEdit.setStyleSheet("color: #00FF00")        
             ui.tEMonitor.append(allFormat.format(str(test) + " " + str(test.control.ftype)))
-
-        # ui.tEMonitor.verticalScrollBar().rangeChanged.connect(
-        #     lambda min, max: ui.tEMonitor.verticalScrollBar(
-        #     ).setSliderPosition(max))
         ui.tEMonitor.moveCursor(QTextCursor.End)
         
         # if config['gp3']['mycall'] in dest and CONNECTED is False:
