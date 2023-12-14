@@ -84,6 +84,7 @@ class Gp3ConGUI(QDialog, gp3ConUi):
         
     def conCh1(self):
         print("Try to connect..")
+        config.read('./config.ini')
         print(self.lEConCallsign.text())
         frame = Frame.sabm(
             destination=self.lEConCallsign.text(),
@@ -91,8 +92,9 @@ class Gp3ConGUI(QDialog, gp3ConUi):
         )
         # ui.tEMonitor.append(serverFormat.format("Connected to Direwolf"))
         ui.tEMonitor.append(serverFormat.format(str(frame) + " " + str(frame.control.ftype)))
+        ui.tEMonitor.moveCursor(QTextCursor.End)
 
-        print()
+        # print()
         ki.write(frame)
         
 
@@ -182,36 +184,25 @@ class Gp3GUI(QMainWindow):
         ui.widChan1.lower()
         ui.widButtonsCh1.lower()
         # ui.widMheard.setEnabled(False)
-                     
+
+''' Ax25 Class '''           
 class kissAx25(Thread):
     def __init__(self, window):
         Thread.__init__(self)
         self.window=window
-        
-        # print("Try to connect to Direwolf server.")
         ki.start()
         ui.tEMonitor.append(serverFormat.format("Connected to Direwolf"))
         
     def run(self): 
-        # print("Read Frames")   
-        # TCP_IP = '192.168.6.115'
-        # TCP_PORT = 8102
-        # BUFFER_SIZE = 255
         while True:
             ki.read(callback=self.print_frame, min_frames=None)
             
-    def scroll_to_bottom(self):
-        # Scroll to the bottom whenever the scrollbar value changes
-        ui.tEMonitor.verticalScrollBar().setValue(self.tEMonitor.verticalScrollBar().maximum())
-        
     def print_frame(self, frame):
         global CONNECTED
-        # config.read('./config.ini')
         if b'<' in frame or b'>' in frame:
             a = frame.replace(b'<', b'&lt;')
             b = a.replace(b'>', b'&gt;')
             frame = b
-            # print(b)
         t = frame.replace(b'\r', b'<br>')
         frame = t
         test = Frame.from_bytes(frame)
@@ -219,15 +210,16 @@ class kissAx25(Thread):
         print(str(frame))
         print(test)
         print(test.control.ftype)
-        dest = str(test.destination)
-        if test.control.ftype is FrameType.U_UI:
-            a = [str(test).split(':', 1)[0] + ':'] + str(test).split(':', 1)[1:]
-            print(a)            
+        # dest = str(test.destination)
+        a = [str(test).split(':', 1)[0] + ':'] + str(test).split(':', 1)[1:]
+        if test.control.ftype is FrameType.U_UI or test.control.ftype is FrameType.I:
             ui.tEMonitor.append(allFormat.format(a[0] + " " + str(test.control.ftype)))
             ui.tEMonitor.append(uiFormat.format(a[1]))
+            print(a)            
         else:
             ui.tEMonitor.append(allFormat.format(str(test) + " " + str(test.control.ftype)))
         ui.tEMonitor.moveCursor(QTextCursor.End)
+        
         
         # if config['gp3']['mycall'] in dest and CONNECTED is False:
         #     print("test")
