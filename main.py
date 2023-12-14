@@ -7,12 +7,15 @@ from PyQt5.QtGui import QMouseEvent
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
 from PyQt5.QtWidgets import QWidget
-import settings 
+import configparser
 from threading import Thread
 from ax253 import Frame, FrameType, Control
 import kiss
 
-MYCALL = os.environ.get("MYCALL", "NL2TST")
+config = configparser.ConfigParser()
+# config.read('./config.ini')
+
+# MYCALL = config['gp3']['mycall']
 KISS_HOST = os.environ.get("KISS_HOST", "192.168.6.115")
 KISS_PORT = os.environ.get("KISS_PORT", "8102")
 CONNECTED = False
@@ -28,38 +31,40 @@ uiFormat = '<span style="color:yellow;">{}</span>'
 class Gp3SetGUI(QMainWindow):
     def __init__(self):
         super(Gp3SetGUI, self).__init__()
-        uic.loadUi("./gp3/settings.ui", self)
+        uic.loadUi("./settings.ui", self)
         self.setWindowTitle("GP3 Settings")
+        
+        config.read('./config.ini')
 
         self.pBSetCancel.clicked.connect(self.cancel)
         self.pBSetSave.clicked.connect(self.save)
-        self.lEMycall.setText(settings.MYCALL)
+        self.lEMycall.setText(config['gp3']['mycall'])
+        
     
     def save(self):
-        settings.MYCALL = self.lEMycall.text()
+        # MYCALL = self.lEMycall.text()
+        config["gp3"]["mycall"] = self.lEMycall.text()
+        with open('./config.ini', 'w') as configfile:
+            config.write(configfile)
         self.hide()
     
     def cancel(self):
         self.hide()
 
-Test = uic.loadUiType("./gp3/connect.ui")[0]
+gp3ConUi = uic.loadUiType("./connect.ui")[0]
 
 ''' GP3 Connect Window '''
-class Gp3ConGUI(QDialog, Test):
+class Gp3ConGUI(QDialog, gp3ConUi):
     def __init__(self, parent=None) -> None:
         QDialog.__init__(self, parent)
         self.setupUi(self)
         # super(Gp3ConGUI, self).__init__()
         global conclose
-        global conui
-        # conui = 
         self.setWindowFlags(Qt.FramelessWindowHint)
         self.setAttribute(Qt.WA_TranslucentBackground)
-        # conui.resize(300,100)
         self.move(500, 824)
         self.conclose = False
         self.show()
-        # self.lEConCallsign.installEventFilter(self)
         self.lEConCallsign.returnPressed.connect(self.conCh1)
         ui.installEventFilter(self)
         
@@ -82,7 +87,7 @@ class Gp3ConGUI(QDialog, Test):
         print(self.lEConCallsign.text())
         frame = Frame.sabm(
             destination=self.lEConCallsign.text(),
-            source=MYCALL,
+            source=config['gp3']['mycall'],
         )
         # ui.tEMonitor.append(serverFormat.format("Connected to Direwolf"))
         ui.tEMonitor.append(serverFormat.format(str(frame) + " " + str(frame.control.ftype)))
@@ -97,7 +102,7 @@ class Gp3GUI(QMainWindow):
     def __init__(self):
         super(Gp3GUI, self).__init__()
         global ui
-        ui = uic.loadUi("./gp3/gp3.ui")
+        ui = uic.loadUi("./gp3.ui")
         # ui.setWindowFlag(Qt.FramelessWindowHint) 
         ui.show()
         ui.pBMheard.clicked.connect(self.mheard)
@@ -177,63 +182,106 @@ class Gp3GUI(QMainWindow):
         ui.widChan1.lower()
         ui.widButtonsCh1.lower()
         # ui.widMheard.setEnabled(False)
-         
-
-        
-   
-# class MouseObserver(QObject):
-#     def __init__(self, widget):
-#         super(MouseObserver, self).__init__(widget)
-#         self._widget = widget
-#         self.widget.eventFilter(self)
-    
-#     @property
-#     def widget(self):
-#         return self._widget
-    
-#     def eventFilter(self, o: QObject, e: QEvent):
-#         if o is self.widget:
-#             if e.type() == QEvent.Type.MouseButtonPress:
-#                 print("Test")
-            
+                     
 class kissAx25(Thread):
     def __init__(self, window):
         Thread.__init__(self)
         self.window=window
         
-        print("Try to connect to Direwolf server.")
+        # print("Try to connect to Direwolf server.")
         ki.start()
         ui.tEMonitor.append(serverFormat.format("Connected to Direwolf"))
         
     def run(self): 
-        print("Read Frames")   
-        TCP_IP = '192.168.6.115'
-        TCP_PORT = 8102
-        BUFFER_SIZE = 255
+        # print("Read Frames")   
+        # TCP_IP = '192.168.6.115'
+        # TCP_PORT = 8102
+        # BUFFER_SIZE = 255
         while True:
             ki.read(callback=self.print_frame, min_frames=None)
             
+    def scroll_to_bottom(self):
+        # Scroll to the bottom whenever the scrollbar value changes
+        ui.tEMonitor.verticalScrollBar().setValue(self.tEMonitor.verticalScrollBar().maximum())
+        
     def print_frame(self, frame):
         global CONNECTED
+        # config.read('./config.ini')
+        if b'<' in frame or b'>' in frame:
+            a = frame.replace(b'<', b'&lt;')
+            b = a.replace(b'>', b'&gt;')
+            frame = b
+            # print(b)
+        t = frame.replace(b'\r', b'<br>')
+        frame = t
         test = Frame.from_bytes(frame)
+        print(frame)
+        print(str(frame))
+        print(test)
         print(test.control.ftype)
         dest = str(test.destination)
         if test.control.ftype is FrameType.U_UI:
+            # a = str(test).split(':')
+            # print(a)
+            a = [str(test).split(':', 1)[0] + ':'] + str(test).split(':', 1)[1:]
+            print(a)            
+            ui.tEMonitor.append(allFormat.format(a[0] + " " + str(test.control.ftype)))
+            ui.tEMonitor.append(uiFormat.format(a[1]))
+            # ui.tEMonitor.verticalScrollBar().setValue(ui.tEMonitor.verticalScrollBar().maximum())
+            # for line in test.info.decode().split('\r'):
+            # if "<" in test.info.decode() or ">" in test.info.decode():
+            #     a = test.info.decode().replace("<", "&lt;")
+            #     print(a)
+                # lineltgt = linelt.replace(">", "&gt;")
+                # print(lineltgt)
             # ui.textEdit.setStyleSheet("color: #FF00FF")
-            ui.tEMonitor.append(uiFormat.format(str(Frame.from_bytes(frame)) + " " + str(test.control.ftype)))
+            
+            
+            #     if "<" in line or ">" in line:
+            #         linelt = line.replace("<", "&lt;")
+            #         lineltgt = linelt.replace(">", "&gt;")
+            #         ui.tEMonitor.append(uiFormat.format(str(lineltgt) + " " + str(test.control.ftype)))
+            #     else:
+            
+                    
+                # index = line.find('<')
+                # if index != -1:
+                #     mfs = line[:index] + '&gt;' + line[index + 1:]
+                #     print(mfs)
+                
+                # if line.find('<') is True:
+                #     test = line.replace("<", "&lt;")
+                #     print(test)
+                #     if test.find('>') == True:
+                #         abc = test.replace(">", "&gt;")
+                #         print(abc)                
+                # else:
+                    
+                # ui.tEMonitor.append(line + " " + str(test.control.ftype))
         else:
             # ui.textEdit.setStyleSheet("color: #00FF00")        
-            ui.tEMonitor.append(allFormat.format(str(Frame.from_bytes(frame)) + " " + str(test.control.ftype)))
+            ui.tEMonitor.append(allFormat.format(str(test) + " " + str(test.control.ftype)))
+
+        # ui.tEMonitor.verticalScrollBar().rangeChanged.connect(
+        #     lambda min, max: ui.tEMonitor.verticalScrollBar(
+        #     ).setSliderPosition(max))
+        ui.tEMonitor.moveCursor(QTextCursor.End)
         
-        if MYCALL in dest and CONNECTED is False:
-            print("Ontvangen")
-            if test.control.ftype is FrameType.U_UA:
-                print(test.info)               
-            
-                              
-        # Gp3 = Gp3GUI()
-        # Gp3.sFtE("Test")
-       
+        # if config['gp3']['mycall'] in dest and CONNECTED is False:
+        #     print("test")
+        #     if test.control.ftype is FrameType.U_UA:
+        #         CONNECTED = True
+        #         pass
+        #     pass
+        # elif config['gp3']['mycall']in dest and CONNECTED is True:
+        #     if test.control.ftype is FrameType.I:
+        #         # print(test.info)
+        #         for line in test.info.split(b"\r"):
+        #             print(line.decode("utf-8"))
+        #             # decode_string = test.info.decode("utf-8")
+        #             # print(decode_string)
+        #             pass
+        #     pass
         
 def main():
     app = QApplication([])
