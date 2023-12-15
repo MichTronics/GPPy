@@ -11,21 +11,20 @@ import configparser
 from threading import Thread
 from ax253 import Frame, FrameType, Control
 import kiss
+from frames import FramesHandler
 
-config = configparser.ConfigParser()
-# config.read('./config.ini')
-
-# MYCALL = config['gp3']['mycall']
-KISS_HOST = os.environ.get("KISS_HOST", "192.168.6.115")
-KISS_PORT = os.environ.get("KISS_PORT", "8102")
-CONNECTED = False
+# CONNECTED = False
 CHATMONITOR = False
 
-ki = kiss.TCPKISS(host=KISS_HOST, port=int(KISS_PORT), strip_df_start=True)
+config = configparser.ConfigParser()
+config.read('./config.ini')
+
+ki = kiss.TCPKISS(host=config['interface1']['host'], port=int(config['interface1']['port']), strip_df_start=True)
 
 serverFormat = '<span style="color:#29F500;">{}</span>'
 allFormat = '<span style="color:gray;">{}</span>'
 uiFormat = '<span style="color:yellow;">{}</span>'
+discFormat = '<span style="color:red;">{}</span>'
 
 ''' GP3 Settings Window '''
 class Gp3SetGUI(QMainWindow):
@@ -106,6 +105,7 @@ class Gp3GUI(QMainWindow):
         global ui
         ui = uic.loadUi("./gp3.ui")
         # ui.setWindowFlag(Qt.FramelessWindowHint) 
+        ui.move(200,100)
         ui.show()
         ui.pBMheard.clicked.connect(self.mheard)
         ui.pBSettings.clicked.connect(self.settings)
@@ -127,22 +127,24 @@ class Gp3GUI(QMainWindow):
             if a1.button() == Qt.MouseButton.RightButton:
                 if CHATMONITOR == False:
                     CHATMONITOR = True
-                    ui.widChan1.resize(1031, 500) #551
+                    ui.widChan1.resize(1024, 500) #551
+                    ui.tECh1.resize(1024, 500)
                     ui.widStatusBot.move(0, 649) #700
-                    ui.widMonitor.resize(1031, 51) #571
+                    ui.widMonitor.resize(1024, 51) #571
                     ui.widMonitor.move(0,670) #150
                     ui.widMheard.lower()
                     ui.tEMonitor
-                    ui.tEMonitor.resize(1031, 51)
+                    ui.tEMonitor.resize(1024, 51)
                     # ui.tEMonitor.move(0, 649)
                 elif CHATMONITOR == True:
                     CHATMONITOR = False
-                    ui.widChan1.resize(1031, 551) #551
+                    ui.widChan1.resize(1024, 551) #551
+                    ui.tECh1.resize(1024, 551)
                     ui.widStatusBot.move(0, 700) #700
-                    ui.widMonitor.resize(1031, 551) #571
+                    ui.widMonitor.resize(1024, 551) #571
                     ui.widMonitor.move(0,150) #150
                     ui.widMonitor.lower()
-                    ui.tEMonitor.resize(1031, 551)
+                    ui.tEMonitor.resize(1024, 551)
                     # ui.tEMonitor.move(0, 150)
         return super().eventFilter(a0, a1)
         
@@ -177,13 +179,19 @@ class Gp3GUI(QMainWindow):
         ui.pBMonitor.setEnabled(False)
         ui.pBMheard.setEnabled(True)
         # ui.widMonitor.lower()
-        ui.widMonitor.resize(1031, 551) #571
+        ui.widMonitor.resize(1024, 551) #571
         ui.widMonitor.move(0,150)
-        ui.tEMonitor.resize(1031, 551)
+        ui.tEMonitor.resize(1024, 551)
         ui.widMheard.lower()
         ui.widChan1.lower()
         ui.widButtonsCh1.lower()
         # ui.widMheard.setEnabled(False)
+        
+    def monitor_message(message):
+        print(message)
+        # ui.tEMonitor.append(message)
+        # ui.tEMonitor.moveCursor(QTextCursor.End)
+        
 
 ''' Ax25 Class '''           
 class kissAx25(Thread):
@@ -195,47 +203,47 @@ class kissAx25(Thread):
         
     def run(self): 
         while True:
-            ki.read(callback=self.print_frame, min_frames=None)
+            ki.read(callback=self.receive_frame, min_frames=None)
             
-    def print_frame(self, frame):
-        global CONNECTED
-        if b'<' in frame or b'>' in frame:
-            a = frame.replace(b'<', b'&lt;')
-            b = a.replace(b'>', b'&gt;')
-            frame = b
-        t = frame.replace(b'\r', b'<br>')
-        frame = t
-        test = Frame.from_bytes(frame)
-        print(frame)
-        print(str(frame))
-        print(test)
-        print(test.control.ftype)
+    def receive_frame(self, frame):
+        self.fh = FramesHandler()
+        self.fh.received_frame(frame, ui, ki)
+        # global CONNECTED
+        
+        # config.read('./config.ini')
+        # if b'<' in frame or b'>' in frame:
+        #     a = frame.replace(b'<', b'&lt;')
+        #     b = a.replace(b'>', b'&gt;')
+        #     frame = b
+        # t = frame.replace(b'\r', b'<br>')
+        # frame = t
+        # test = Frame.from_bytes(frame)
+        # print(frame)
+        # print(str(frame))
+        # print(test)
+        # print(test.control.ftype)
         # dest = str(test.destination)
-        a = [str(test).split(':', 1)[0] + ':'] + str(test).split(':', 1)[1:]
-        if test.control.ftype is FrameType.U_UI or test.control.ftype is FrameType.I:
-            ui.tEMonitor.append(allFormat.format(a[0] + " " + str(test.control.ftype)))
-            ui.tEMonitor.append(uiFormat.format(a[1]))
-            print(a)            
-        else:
-            ui.tEMonitor.append(allFormat.format(str(test) + " " + str(test.control.ftype)))
-        ui.tEMonitor.moveCursor(QTextCursor.End)
+        # 
+        # if test.control.ftype is FrameType.U_UI or test.control.ftype is FrameType.I:
+        #     ui.tEMonitor.append(allFormat.format(a[0] + " " + str(test.control.ftype)))
+        #     ui.tEMonitor.append(uiFormat.format(a[1]))
+        #     print(a)            
+        # else:
+        #     ui.tEMonitor.append(allFormat.format(str(test) + " " + str(test.control.ftype)))
+        # ui.tEMonitor.moveCursor(QTextCursor.End)
         
         
-        # if config['gp3']['mycall'] in dest and CONNECTED is False:
+        # if config['gp3']['mycall'] in str(test.destination) and CONNECTED is False:
         #     print("test")
         #     if test.control.ftype is FrameType.U_UA:
         #         CONNECTED = True
-        #         pass
-        #     pass
-        # elif config['gp3']['mycall']in dest and CONNECTED is True:
+        # elif config['gp3']['mycall']in str(test.destination) and CONNECTED is True:
         #     if test.control.ftype is FrameType.I:
-        #         # print(test.info)
-        #         for line in test.info.split(b"\r"):
-        #             print(line.decode("utf-8"))
+        #         print(test.info)
+        #         # for line in test.info.split(b"\r"):
+        #         #     print(line.decode("utf-8"))
         #             # decode_string = test.info.decode("utf-8")
         #             # print(decode_string)
-        #             pass
-        #     pass
         
 def main():
     app = QApplication([])

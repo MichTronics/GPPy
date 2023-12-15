@@ -6,9 +6,33 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1032</width>
+    <width>1024</width>
     <height>768</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="minimumSize">
+   <size>
+    <width>1024</width>
+    <height>768</height>
+   </size>
+  </property>
+  <property name="maximumSize">
+   <size>
+    <width>1024</width>
+    <height>768</height>
+   </size>
+  </property>
+  <property name="baseSize">
+   <size>
+    <width>1024</width>
+    <height>768</height>
+   </size>
   </property>
   <property name="palette">
    <palette>
@@ -426,9 +450,12 @@
    </palette>
   </property>
   <property name="windowTitle">
-   <string>GP3</string>
+   <string>GPPy</string>
   </property>
   <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="animated">
    <bool>false</bool>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -437,7 +464,7 @@
      <rect>
       <x>0</x>
       <y>720</y>
-      <width>1031</width>
+      <width>1024</width>
       <height>51</height>
      </rect>
     </property>
@@ -940,7 +967,7 @@
      <rect>
       <x>0</x>
       <y>150</y>
-      <width>1031</width>
+      <width>1024</width>
       <height>571</height>
      </rect>
     </property>
@@ -955,7 +982,7 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>1031</width>
+       <width>1024</width>
        <height>551</height>
       </rect>
      </property>
@@ -984,19 +1011,6 @@
       <string/>
      </property>
     </widget>
-    <widget class="QWidget" name="widStatusBot" native="true">
-     <property name="geometry">
-      <rect>
-       <x>0</x>
-       <y>550</y>
-       <width>1031</width>
-       <height>21</height>
-      </rect>
-     </property>
-     <property name="styleSheet">
-      <string notr="true">background-color: rgb(188, 188, 188);</string>
-     </property>
-    </widget>
    </widget>
    <widget class="QWidget" name="widMheard" native="true">
     <property name="enabled">
@@ -1006,7 +1020,7 @@
      <rect>
       <x>0</x>
       <y>150</y>
-      <width>1031</width>
+      <width>1024</width>
       <height>571</height>
      </rect>
     </property>
@@ -1018,7 +1032,7 @@
       <rect>
        <x>0</x>
        <y>0</y>
-       <width>1031</width>
+       <width>1024</width>
        <height>571</height>
       </rect>
      </property>
@@ -1029,7 +1043,7 @@
      <rect>
       <x>0</x>
       <y>109</y>
-      <width>1031</width>
+      <width>1024</width>
       <height>41</height>
      </rect>
     </property>
@@ -1071,7 +1085,7 @@ border-width: 1px;</string>
      <rect>
       <x>0</x>
       <y>70</y>
-      <width>1031</width>
+      <width>1024</width>
       <height>41</height>
      </rect>
     </property>
@@ -1175,20 +1189,39 @@ color: rgb(163, 163, 163);</string>
      <rect>
       <x>0</x>
       <y>150</y>
-      <width>1031</width>
+      <width>1024</width>
       <height>551</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">background-color: rgb(90, 90, 90);</string>
     </property>
+    <widget class="QTextEdit" name="tECh1">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1024</width>
+       <height>551</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 75 14pt &quot;MS Shell Dlg 2&quot;;</string>
+     </property>
+     <property name="verticalScrollBarPolicy">
+      <enum>Qt::ScrollBarAlwaysOn</enum>
+     </property>
+     <property name="textInteractionFlags">
+      <set>Qt::NoTextInteraction</set>
+     </property>
+    </widget>
    </widget>
    <widget class="QWidget" name="widButtonsCh1" native="true">
     <property name="geometry">
      <rect>
       <x>0</x>
       <y>720</y>
-      <width>1031</width>
+      <width>1024</width>
       <height>51</height>
      </rect>
     </property>
@@ -1686,13 +1719,27 @@ color: rgb(163, 163, 163);</string>
      </property>
     </widget>
    </widget>
+   <widget class="QWidget" name="widStatusBot" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>700</y>
+      <width>1024</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(188, 188, 188);</string>
+    </property>
+   </widget>
+   <zorder>widChan1</zorder>
    <zorder>widButtonsCh1</zorder>
    <zorder>widButtons</zorder>
-   <zorder>widChan1</zorder>
    <zorder>widMheard</zorder>
    <zorder>widMonitor</zorder>
    <zorder>widChannels</zorder>
    <zorder>widStatus</zorder>
+   <zorder>widStatusBot</zorder>
   </widget>
  </widget>
  <resources/>

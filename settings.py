@@ -1,1 +1,0 @@
-MYCALL = "NL2TST"
