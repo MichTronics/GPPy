@@ -85,16 +85,20 @@ class Gp3ConGUI(QDialog, gp3ConUi):
         print("Try to connect..")
         config.read('./config.ini')
         print(self.lEConCallsign.text())
-        frame = Frame.sabm(
+        frame_sabm = Frame.ui(
             destination=self.lEConCallsign.text(),
             source=config['gp3']['mycall'],
+            path=[],
+            info="",
+            control=FrameType.U_SABM.value,
+            # control=Control(b"\x2f" | FrameType.S_RR.value | (1 << 4))
         )
         # ui.tEMonitor.append(serverFormat.format("Connected to Direwolf"))
-        ui.tEMonitor.append(serverFormat.format(str(frame) + " " + str(frame.control.ftype)))
+        ui.tEMonitor.append(serverFormat.format(str(frame_sabm) + " " + str(frame_sabm.control.ftype)))
         ui.tEMonitor.moveCursor(QTextCursor.End)
 
         # print()
-        ki.write(frame)
+        ki.write(frame_sabm)
         
 
 ''' GP3 Main Gui '''        

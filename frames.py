@@ -43,7 +43,7 @@ class FramesHandler:
     def check_ftype_messages(self, frame, ui, ki):
         global CONNECTED
         frameAX25 = Frame.from_bytes(frame)
-        frameAX25Source = frameAX25.source
+        frameAX25Source = frameAX25.source.callsign.decode()
         frameAX25Destination = frameAX25.destination
         frameAX25Control = frameAX25.control.ftype
         frameAX25Info = frameAX25.info
@@ -54,10 +54,13 @@ class FramesHandler:
             ui.tEMonitor.append(uiFormat.format(frameAX25Split[1]))
             if CONNECTED is True:
                 ui.tECh1.append(messageFormat.format(frameAX25Split[1]))
-                frame = Frame.rr(
+                frame = Frame.ui(
                     destination=frameAX25Source,
                     source=config['gp3']['mycall'],
-                )
+                    path=[],
+                    info="",
+                    control=FrameType.S_RR.value | (1 << 4) | (1 << 5), 
+    )
                 ui.tEMonitor.append(discFormat.format(str(frame) +  ' ' + str(frame.control.ftype)))
                 ki.write(frame)
         elif frameAX25Control is FrameType.U_UI:
@@ -73,21 +76,27 @@ class FramesHandler:
         elif frameAX25Control is FrameType.S_RR:
             ui.tEMonitor.append(allFormat.format(frameAX25Split[0] + " " + str(frameAX25Control)))
             if CONNECTED is False:
-                frame = Frame.disc(
+                frame_disc = Frame.ui(
                     destination=frameAX25Source,
                     source=config['gp3']['mycall'],
+                    path=[],
+                    info="",
+                    control=FrameType.U_DISC.value,
                 )
-                ui.tEMonitor.append(discFormat.format(str(frame) +  ' ' + str(frame.control.ftype)))
-                ki.write(frame)
+                ui.tEMonitor.append(discFormat.format(str(frame_disc) +  ' ' + str(frame_disc.control.ftype)))
+                ki.write(frame_disc)
                 CONNECTED = False
         elif frameAX25Control is FrameType.U_DISC:
             if CONNECTED is True:
-                frame = Frame.ua(
-                destination=frameAX25Source,
-                source=config['gp3']['mycall'],
+                frame_disc = Frame.ui(
+                    destination=frameAX25Source,
+                    source=config['gp3']['mycall'],
+                    path=[],
+                    info="",
+                    control=FrameType.U_DISC.value,
             )
-            ui.tEMonitor.append(discFormat.format(str(frame) +  ' ' + str(frame.control.ftype)))
-            ki.write(frame)
+            ui.tEMonitor.append(discFormat.format(str(frame_disc) +  ' ' + str(frame_disc.control.ftype)))
+            ki.write(frame_disc)
             CONNECTED = False
         else:
             ui.tEMonitor.append(allFormat.format(str(frameAX25) + " " + str(frameAX25Control)))
