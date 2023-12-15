@@ -27,7 +27,7 @@ def main():
         source=MYCALL,
         path=[],
         info="",
-        control=FrameType.I.value | (2 << 4), 
+        control=FrameType.S_RR.value | (1 << 4), 
     )
     ki.write(frame)
     ki.read(callback=print_frame, min_frames=None)
