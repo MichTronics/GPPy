@@ -465,7 +465,7 @@
       <x>0</x>
       <y>720</y>
       <width>1024</width>
-      <height>51</height>
+      <height>48</height>
      </rect>
     </property>
     <property name="palette">
@@ -556,8 +556,8 @@
         <brush brushstyle="SolidPattern">
          <color alpha="255">
           <red>255</red>
-          <green>255</green>
-          <blue>255</blue>
+          <green>0</green>
+          <blue>0</blue>
          </color>
         </brush>
        </colorrole>
@@ -693,8 +693,8 @@
         <brush brushstyle="SolidPattern">
          <color alpha="255">
           <red>255</red>
-          <green>255</green>
-          <blue>255</blue>
+          <green>0</green>
+          <blue>0</blue>
          </color>
         </brush>
        </colorrole>
@@ -884,7 +884,13 @@
      </palette>
     </property>
     <property name="autoFillBackground">
-     <bool>true</bool>
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-color: rgb(255, 255, 255);
+background-color: rgb(255, 0, 0);
+border-style: outset;
+border-width: 1px;</string>
     </property>
     <widget class="QPushButton" name="pBMheard">
      <property name="geometry">
@@ -892,7 +898,7 @@
        <x>10</x>
        <y>0</y>
        <width>81</width>
-       <height>51</height>
+       <height>48</height>
       </rect>
      </property>
      <property name="text">
@@ -915,7 +921,7 @@
        <x>100</x>
        <y>0</y>
        <width>81</width>
-       <height>51</height>
+       <height>48</height>
       </rect>
      </property>
      <property name="text">
@@ -928,7 +934,7 @@
        <x>190</x>
        <y>0</y>
        <width>81</width>
-       <height>51</height>
+       <height>48</height>
       </rect>
      </property>
      <property name="text">
@@ -941,8 +947,11 @@
        <x>370</x>
        <y>0</y>
        <width>81</width>
-       <height>51</height>
+       <height>48</height>
       </rect>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
      </property>
      <property name="text">
       <string>Settings</string>
@@ -954,7 +963,7 @@
        <x>280</x>
        <y>0</y>
        <width>81</width>
-       <height>51</height>
+       <height>48</height>
       </rect>
      </property>
      <property name="text">
@@ -966,7 +975,7 @@
     <property name="geometry">
      <rect>
       <x>0</x>
-      <y>150</y>
+      <y>149</y>
       <width>1024</width>
       <height>571</height>
      </rect>
@@ -996,7 +1005,10 @@
       </font>
      </property>
      <property name="styleSheet">
-      <string notr="true">font: 75 14pt &quot;MS Shell Dlg 2&quot;;</string>
+      <string notr="true">font: 75 14pt &quot;MS Shell Dlg 2&quot;;
+border-color: rgb(255, 255, 255);
+border-style: outset;
+border-width: 1px;</string>
      </property>
      <property name="verticalScrollBarPolicy">
       <enum>Qt::ScrollBarAlwaysOn</enum>
@@ -1222,7 +1234,7 @@ color: rgb(163, 163, 163);</string>
       <x>0</x>
       <y>720</y>
       <width>1024</width>
-      <height>51</height>
+      <height>48</height>
      </rect>
     </property>
     <property name="palette">
@@ -1641,7 +1653,12 @@ color: rgb(163, 163, 163);</string>
      </palette>
     </property>
     <property name="autoFillBackground">
-     <bool>true</bool>
+     <bool>false</bool>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border-color: rgb(255, 255, 255);
+border-style: outset;
+border-width: 1px;</string>
     </property>
     <widget class="QPushButton" name="pBConnectCh1">
      <property name="geometry">
@@ -1649,7 +1666,7 @@ color: rgb(163, 163, 163);</string>
        <x>10</x>
        <y>0</y>
        <width>81</width>
-       <height>51</height>
+       <height>48</height>
       </rect>
      </property>
      <property name="text">
@@ -1672,7 +1689,7 @@ color: rgb(163, 163, 163);</string>
        <x>100</x>
        <y>0</y>
        <width>81</width>
-       <height>51</height>
+       <height>48</height>
       </rect>
      </property>
      <property name="text">
@@ -1685,7 +1702,7 @@ color: rgb(163, 163, 163);</string>
        <x>190</x>
        <y>0</y>
        <width>81</width>
-       <height>51</height>
+       <height>48</height>
       </rect>
      </property>
      <property name="text">
@@ -1698,7 +1715,7 @@ color: rgb(163, 163, 163);</string>
        <x>370</x>
        <y>0</y>
        <width>81</width>
-       <height>51</height>
+       <height>48</height>
       </rect>
      </property>
      <property name="text">
@@ -1711,13 +1728,35 @@ color: rgb(163, 163, 163);</string>
        <x>280</x>
        <y>0</y>
        <width>81</width>
-       <height>51</height>
+       <height>48</height>
       </rect>
      </property>
      <property name="text">
       <string>Monitor</string>
      </property>
     </widget>
+    <widget class="QPushButton" name="pBDiscCh1">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>0</y>
+       <width>81</width>
+       <height>48</height>
+      </rect>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(255, 170, 0);</string>
+     </property>
+     <property name="text">
+      <string>Discconnect</string>
+     </property>
+    </widget>
+    <zorder>pBDiscCh1</zorder>
+    <zorder>pBConnectCh1</zorder>
+    <zorder>pushButton_9</zorder>
+    <zorder>pushButton_10</zorder>
+    <zorder>pBSettings_3</zorder>
+    <zorder>pBMonitorCh1</zorder>
    </widget>
    <widget class="QWidget" name="widStatusBot" native="true">
     <property name="geometry">
@@ -1732,14 +1771,46 @@ color: rgb(163, 163, 163);</string>
      <string notr="true">background-color: rgb(188, 188, 188);</string>
     </property>
    </widget>
-   <zorder>widChan1</zorder>
+   <widget class="QWidget" name="widInput" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>0</y>
+      <width>1024</width>
+      <height>70</height>
+     </rect>
+    </property>
+    <widget class="QTextEdit" name="tEInput">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>1024</width>
+       <height>71</height>
+      </rect>
+     </property>
+     <property name="toolTipDuration">
+      <number>0</number>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">font: 75 14pt &quot;MS Shell Dlg 2&quot;;
+color: rgb(0, 0, 0);
+background-color: rgb(0, 170, 255);
+border-color: rgb(255, 255, 255);
+border-style: outset;
+border-width: 1px;</string>
+     </property>
+    </widget>
+   </widget>
    <zorder>widButtonsCh1</zorder>
+   <zorder>widChan1</zorder>
    <zorder>widButtons</zorder>
    <zorder>widMheard</zorder>
    <zorder>widMonitor</zorder>
    <zorder>widChannels</zorder>
    <zorder>widStatus</zorder>
    <zorder>widStatusBot</zorder>
+   <zorder>widInput</zorder>
   </widget>
  </widget>
  <resources/>

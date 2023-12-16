@@ -2,7 +2,7 @@ import os, sys, time
 from collections.abc import Callable, Iterable, Mapping
 from typing import Any
 from PyQt5.QtGui import *
-from PyQt5.QtCore import QObject, Qt, QEvent
+from PyQt5.QtCore import QObject, Qt, QEvent, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QMouseEvent
 from PyQt5.QtWidgets import *
 from PyQt5 import uic
@@ -95,22 +95,24 @@ class Gp3ConGUI(QDialog, gp3ConUi):
         )
         # ui.tEMonitor.append(serverFormat.format("Connected to Direwolf"))
         ui.tEMonitor.append(serverFormat.format(str(frame_sabm) + " " + str(frame_sabm.control.ftype)))
+        ui.pBConnectCh1.lower()
+        ui.pBChan1.setText("1: " + self.lEConCallsign.text())
         ui.tEMonitor.moveCursor(QTextCursor.End)
 
         # print()
         ki.write(frame_sabm)
+        self.close()
         
 
 ''' GP3 Main Gui '''        
 class Gp3GUI(QMainWindow):
-    
+    customSignal = pyqtSignal(QTextCursor)
     def __init__(self):
         super(Gp3GUI, self).__init__()
         global ui
         ui = uic.loadUi("./gp3.ui")
         # ui.setWindowFlag(Qt.FramelessWindowHint) 
         ui.move(200,100)
-        ui.show()
         ui.pBMheard.clicked.connect(self.mheard)
         ui.pBSettings.clicked.connect(self.settings)
         ui.pBMonitor.setEnabled(False)
@@ -119,7 +121,10 @@ class Gp3GUI(QMainWindow):
         ui.pBChan1.clicked.connect(self.chan1)
         ui.lWTitle.setText("Monitor")
         ui.pBConnectCh1.clicked.connect(self.connect)
+        ui.pBDiscCh1.clicked.connect(Gp3GUI.disconnect)
         ui.widChan1.installEventFilter(self)
+        ui.tEMonitor.document().setMaximumBlockCount(500)
+        ui.show()
         
     def eventFilter(self, a0: QObject, a1: QEvent) -> bool:
         global CHATMONITOR
@@ -165,6 +170,10 @@ class Gp3GUI(QMainWindow):
     def connect(self):
         self.w = Gp3ConGUI()
         self.w.show()
+
+    def disconnect():
+        FramesHandler.disc(ui, ki)
+        ui.pBDiscCh1.lower()
              
     def mheard(self):
         ui.lWTitle.setText("MHeard")

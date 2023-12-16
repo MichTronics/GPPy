@@ -22,7 +22,6 @@ class FramesHandler:
         pass
     
     def received_frame(self, frame, ui, ki):
-        
         config.read('./config.ini')
         rframes = self.replace_charcters_html(frame)
         frame = rframes
@@ -40,8 +39,25 @@ class FramesHandler:
         frame_lt_gt_br = frame.replace(b'\r', b'<br>')
         return frame_lt_gt_br
     
+    def disc(ui, ki):
+        frame_disc = Frame.ui(
+            destination=frameAX25Source,
+            source=config['gp3']['mycall'],
+            path=[],
+            info="",
+            control=FrameType.U_DISC.value,
+        )
+        ui.tEMonitor.append(discFormat.format(str(frame_disc) +  ' ' + str(frame_disc.control.ftype)))
+        ki.write(frame_disc)
+        CONNECTED = False
+        ui.tECh1.append(discFormat.format("Disconnected from " + str(frameAX25Source)))
+        ui.pBChan1.setText("1: ------")
+        ui.pBDiscCh1.lower()
+        
+        
     def check_ftype_messages(self, frame, ui, ki):
         global CONNECTED
+        global frameAX25Source
         frameAX25 = Frame.from_bytes(frame)
         frameAX25Source = frameAX25.source.callsign.decode()
         frameAX25Destination = frameAX25.destination
@@ -54,15 +70,15 @@ class FramesHandler:
             ui.tEMonitor.append(uiFormat.format(frameAX25Split[1]))
             if CONNECTED is True:
                 ui.tECh1.append(messageFormat.format(frameAX25Split[1]))
-                frame = Frame.ui(
+                frame_rr = Frame.ui(
                     destination=frameAX25Source,
                     source=config['gp3']['mycall'],
                     path=[],
                     info="",
                     control=FrameType.S_RR.value | (1 << 4) | (1 << 5), 
-    )
-                ui.tEMonitor.append(discFormat.format(str(frame) +  ' ' + str(frame.control.ftype)))
-                ki.write(frame)
+                )
+                ui.tEMonitor.append(discFormat.format(str(frame_rr) +  ' ' + str(frame_rr.control.ftype)))
+                ki.write(frame_rr)
         elif frameAX25Control is FrameType.U_UI:
             ui.tEMonitor.append(allFormat.format(frameAX25Split[0] + " " + str(frameAX25Control)))
             ui.tEMonitor.append(uiFormat.format(frameAX25Split[1]))
@@ -85,19 +101,35 @@ class FramesHandler:
                 )
                 ui.tEMonitor.append(discFormat.format(str(frame_disc) +  ' ' + str(frame_disc.control.ftype)))
                 ki.write(frame_disc)
-                CONNECTED = False
+                # CONNECTED = False
+            else:
+                frame_rr = Frame.ui(
+                    destination=frameAX25Source,
+                    source=config['gp3']['mycall'],
+                    path=[],
+                    info="",
+                    control=FrameType.S_RR.value | (1 << 4) | (1 << 5), 
+                )
+                ui.tEMonitor.append(discFormat.format(str(frame_rr) +  ' ' + str(frame_rr.control.ftype)))
+                ki.write(frame_rr)
+                
         elif frameAX25Control is FrameType.U_DISC:
             if CONNECTED is True:
+                ui.tEMonitor.append(discFormat.format(frameAX25Split[0] + " " + str(frameAX25Control)))
                 frame_disc = Frame.ui(
                     destination=frameAX25Source,
                     source=config['gp3']['mycall'],
                     path=[],
                     info="",
-                    control=FrameType.U_DISC.value,
-            )
-            ui.tEMonitor.append(discFormat.format(str(frame_disc) +  ' ' + str(frame_disc.control.ftype)))
-            ki.write(frame_disc)
-            CONNECTED = False
+                    control=FrameType.U_UA.value,
+                )
+                ui.tEMonitor.append(discFormat.format(str(frame_disc) +  ' ' + str(frame_disc.control.ftype)))
+                ki.write(frame_disc)
+                CONNECTED = False
+                ui.tECh1.append(discFormat.format("Disconnected from " + str(frameAX25Source)))
+            else:
+                ui.tEMonitor.append(allFormat.format(frameAX25Split[0] + " " + str(frameAX25Control)))
+
         else:
             ui.tEMonitor.append(allFormat.format(str(frameAX25) + " " + str(frameAX25Control)))
         ui.tEMonitor.moveCursor(QTextCursor.End)
