@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'c:\Users\Michel\Desktop\projects\python\kiss_client\gp3\gp3.ui'
+# Form implementation generated from reading ui file 'c:\Users\Michel\Desktop\projects\python\kiss_client\gp3\gppy.ui'
 #
 # Created by: PyQt5 UI code generator 5.15.9
 #
@@ -337,6 +337,11 @@ class Ui_MainWindow(object):
         self.tEMonitor = QtWidgets.QTextEdit(self.widMonitor)
         self.tEMonitor.setEnabled(True)
         self.tEMonitor.setGeometry(QtCore.QRect(0, 0, 1024, 551))
+        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.tEMonitor.sizePolicy().hasHeightForWidth())
+        self.tEMonitor.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setFamily("MS Shell Dlg 2")
         font.setPointSize(14)
@@ -618,6 +623,60 @@ class Ui_MainWindow(object):
 "border-style: outset;\n"
 "border-width: 1px;")
         self.tEInput.setObjectName("tEInput")
+        self.widConnect = QtWidgets.QWidget(self.centralwidget)
+        self.widConnect.setGeometry(QtCore.QRect(70, 659, 261, 61))
+        self.widConnect.setStyleSheet("background-color: rgba(85, 85, 255,255);\n"
+"border-color: rgb(255, 255, 255);\n"
+"border-style: outset;\n"
+"border-radius: 15px;\n"
+"border-width: 1px;")
+        self.widConnect.setObjectName("widConnect")
+        self.lbLConnect = QtWidgets.QLabel(self.widConnect)
+        self.lbLConnect.setGeometry(QtCore.QRect(20, 10, 221, 16))
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.lbLConnect.setFont(font)
+        self.lbLConnect.setStyleSheet("color: rgb(255, 255, 255);")
+        self.lbLConnect.setAlignment(QtCore.Qt.AlignCenter)
+        self.lbLConnect.setObjectName("lbLConnect")
+        self.lEConCallsign = QtWidgets.QLineEdit(self.widConnect)
+        self.lEConCallsign.setGeometry(QtCore.QRect(20, 30, 221, 21))
+        font = QtGui.QFont()
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setWeight(75)
+        self.lEConCallsign.setFont(font)
+        self.lEConCallsign.setStyleSheet("background-color: rgb(94, 94, 94);\n"
+"color: rgb(255, 255, 0);")
+        self.lEConCallsign.setInputMask("")
+        self.lEConCallsign.setObjectName("lEConCallsign")
+        self.widSettings = QtWidgets.QWidget(self.centralwidget)
+        self.widSettings.setGeometry(QtCore.QRect(140, 170, 791, 511))
+        self.widSettings.setStyleSheet("background-color: rgb(218, 218, 218);\n"
+"color: rgb(0, 0, 0);")
+        self.widSettings.setObjectName("widSettings")
+        self.pBSetCancel = QtWidgets.QPushButton(self.widSettings)
+        self.pBSetCancel.setGeometry(QtCore.QRect(680, 460, 75, 23))
+        self.pBSetCancel.setObjectName("pBSetCancel")
+        self.pBSetSave = QtWidgets.QPushButton(self.widSettings)
+        self.pBSetSave.setGeometry(QtCore.QRect(580, 460, 75, 23))
+        self.pBSetSave.setObjectName("pBSetSave")
+        self.lbLSetMycall = QtWidgets.QLabel(self.widSettings)
+        self.lbLSetMycall.setGeometry(QtCore.QRect(80, 60, 81, 31))
+        font = QtGui.QFont()
+        font.setFamily("Arial")
+        font.setPointSize(12)
+        font.setBold(True)
+        font.setWeight(75)
+        self.lbLSetMycall.setFont(font)
+        self.lbLSetMycall.setAutoFillBackground(False)
+        self.lbLSetMycall.setStyleSheet("color: rgb(0, 0, 0);")
+        self.lbLSetMycall.setObjectName("lbLSetMycall")
+        self.lESetMycall = QtWidgets.QLineEdit(self.widSettings)
+        self.lESetMycall.setGeometry(QtCore.QRect(170, 60, 113, 31))
+        self.lESetMycall.setObjectName("lESetMycall")
         self.widButtonsCh1.raise_()
         self.widChan1.raise_()
         self.widButtons.raise_()
@@ -627,6 +686,8 @@ class Ui_MainWindow(object):
         self.widStatus.raise_()
         self.widStatusBot.raise_()
         self.widInput.raise_()
+        self.widSettings.raise_()
+        self.widConnect.raise_()
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -649,3 +710,9 @@ class Ui_MainWindow(object):
         self.pBSettings_3.setText(_translate("MainWindow", "Settings"))
         self.pBMonitorCh1.setText(_translate("MainWindow", "Monitor"))
         self.pBDiscCh1.setText(_translate("MainWindow", "Discconnect"))
+        self.lbLConnect.setText(_translate("MainWindow", "Call [Digi1 Digi2] :"))
+        self.lEConCallsign.setText(_translate("MainWindow", "*"))
+        self.lEConCallsign.setPlaceholderText(_translate("MainWindow", "<callsign>"))
+        self.pBSetCancel.setText(_translate("MainWindow", "Cancel"))
+        self.pBSetSave.setText(_translate("MainWindow", "Save"))
+        self.lbLSetMycall.setText(_translate("MainWindow", "Callsign :"))

@@ -995,6 +995,12 @@ border-width: 1px;</string>
        <height>551</height>
       </rect>
      </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="font">
       <font>
        <family>MS Shell Dlg 2</family>
@@ -1802,6 +1808,156 @@ border-width: 1px;</string>
      </property>
     </widget>
    </widget>
+   <widget class="QWidget" name="widConnect" native="true">
+    <property name="geometry">
+     <rect>
+      <x>70</x>
+      <y>659</y>
+      <width>261</width>
+      <height>61</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgba(85, 85, 255,255);
+border-color: rgb(255, 255, 255);
+border-style: outset;
+border-radius: 15px;
+border-width: 1px;</string>
+    </property>
+    <widget class="QLabel" name="lbLConnect">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>10</y>
+       <width>221</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>10</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(255, 255, 255);</string>
+     </property>
+     <property name="text">
+      <string>Call [Digi1 Digi2] :</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignCenter</set>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lEConCallsign">
+     <property name="geometry">
+      <rect>
+       <x>20</x>
+       <y>30</y>
+       <width>221</width>
+       <height>21</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: rgb(94, 94, 94);
+color: rgb(255, 255, 0);</string>
+     </property>
+     <property name="inputMask">
+      <string/>
+     </property>
+     <property name="text">
+      <string>*</string>
+     </property>
+     <property name="placeholderText">
+      <string>&lt;callsign&gt;</string>
+     </property>
+    </widget>
+   </widget>
+   <widget class="QWidget" name="widSettings" native="true">
+    <property name="geometry">
+     <rect>
+      <x>140</x>
+      <y>170</y>
+      <width>791</width>
+      <height>511</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">background-color: rgb(218, 218, 218);
+color: rgb(0, 0, 0);</string>
+    </property>
+    <widget class="QPushButton" name="pBSetCancel">
+     <property name="geometry">
+      <rect>
+       <x>680</x>
+       <y>460</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Cancel</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="pBSetSave">
+     <property name="geometry">
+      <rect>
+       <x>580</x>
+       <y>460</y>
+       <width>75</width>
+       <height>23</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Save</string>
+     </property>
+    </widget>
+    <widget class="QLabel" name="lbLSetMycall">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>60</y>
+       <width>81</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Arial</family>
+       <pointsize>12</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="autoFillBackground">
+      <bool>false</bool>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">color: rgb(0, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string>Callsign :</string>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="lESetMycall">
+     <property name="geometry">
+      <rect>
+       <x>170</x>
+       <y>60</y>
+       <width>113</width>
+       <height>31</height>
+      </rect>
+     </property>
+    </widget>
+   </widget>
    <zorder>widButtonsCh1</zorder>
    <zorder>widChan1</zorder>
    <zorder>widButtons</zorder>
@@ -1811,6 +1967,8 @@ border-width: 1px;</string>
    <zorder>widStatus</zorder>
    <zorder>widStatusBot</zorder>
    <zorder>widInput</zorder>
+   <zorder>widSettings</zorder>
+   <zorder>widConnect</zorder>
   </widget>
  </widget>
  <resources/>
